@@ -12,6 +12,8 @@ jenkins:
 
 production:
   image: jakubigla/docker-apache-php
+  ports:
+   - "127.0.0.1:8080:8080"
   volumes_from:
      - "data"
   tty: true
