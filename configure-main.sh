@@ -8,9 +8,9 @@ apt-get install ntp ntpdate
 dpkg-reconfigure tzdata
 apt-get install fail2ban rkhunter psad lynis
 
-cd /root && wget http://www.webmin.com/jcameron-key.asc && apt-key add jcameron-key.asc
-apt-get update
-apt-get install webmin
+apt-get install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
+wget http://prdownloads.sourceforge.net/webadmin/webmin_1.760_all.deb
+dpkg --install webmin_1.760_all.deb
 
 nano /etc/ssh/sshd_config
 systemctl restart ssh.service
