@@ -17,3 +17,4 @@ production:
   volumes_from:
      - "data"
   tty: true
+  entrypoint: ["jenkins"]
