@@ -1,0 +1,17 @@
+data:
+  image: jakubigla/docker-data-only
+  entrypoint: ["true"]
+
+jenkins:
+  image: jenkins
+  ports:
+   - "8000:8080"
+  volumes_from:
+   - "data"
+  tty: true
+
+production:
+  image: jakubigla/docker-apache-php
+  volumes_from:
+     - "data"
+  tty: true
