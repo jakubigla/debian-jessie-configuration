@@ -3,12 +3,14 @@ data:
   entrypoint: ["true"]
 
 jenkins:
-  image: jenkins
-  ports:
-   - "8000:8080"
-  volumes_from:
-   - "data"
-  tty: true
+ image: jenkins
+ ports:
+  - "8000:8080"
+ volumes_from:
+  - "data"
+ volumes:
+  - /var/jenkins_home
+ tty: true
 
 production:
   image: jakubigla/docker-apache-php
@@ -17,4 +19,3 @@ production:
   volumes_from:
      - "data"
   tty: true
-  entrypoint: ["jenkins"]
