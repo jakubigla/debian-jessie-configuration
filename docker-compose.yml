@@ -1,9 +1,20 @@
-data:
-  image: jakubigla/docker-data-only
+datajenkins:
+  image: jakubigla/jenkins-data-only
   volumes:
    - /docker-data/jenkins_home:/var/jenkins_home
-  entrypoint: ["true"]
-  restart: always
+
+dataproduction:
+  image: jakubigla/web-data-only
+  volumes:
+   - /docker-data/production/www:/www
+   - /docker-data/production/vhosts:/etc/apache2/sites-available
+
+datastaging:
+  image: jakubigla/web-data-only
+  volumes:
+   - /docker-data/staging/www:/www
+   - /docker-data/staging/vhosts:/etc/apache2/sites-available
+
 jenkins:
   image: jenkins
   ports:
@@ -12,11 +23,21 @@ jenkins:
    - /var/jenkins_home
   tty: true
   restart: always
+
 production:
-  image: jakubigla/docker-apache-php
+  image: jakubigla/apache-php
   ports:
    - "127.0.0.1:8080:8080"
   volumes_from:
-     - "data"
+     - "dataproduction"
+  tty: true
+  restart: always
+
+staging:
+  image: jakubigla/apache-php
+  ports:
+   - "127.0.0.1:8081:8080"
+  volumes_from:
+     - "datastaging"
   tty: true
   restart: always
