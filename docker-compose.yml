@@ -1,15 +1,17 @@
 data:
   image: jakubigla/docker-data-only
-  entrypoint: ["true"]
   volumes:
    - /docker-data/jenkins_home:/var/jenkins_home
+  entrypoint: ["true"]
+  restart: always
 jenkins:
- image: jenkins
- ports:
-  - "8000:8080"
- tty: true
- volumes:
-  - /var/jenkins_home
+  image: jenkins
+  ports:
+   - "8000:8080"
+  volumes:
+   - /var/jenkins_home
+  tty: true
+  restart: always
 production:
   image: jakubigla/docker-apache-php
   ports:
@@ -17,3 +19,4 @@ production:
   volumes_from:
      - "data"
   tty: true
+  restart: always
