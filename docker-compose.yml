@@ -8,12 +8,14 @@ productiondata:
   volumes:
    - /docker-data/production/www:/www
    - /docker-data/production/vhosts:/etc/apache2/sites-available
+   - /docker-data/production/log:/var/log
 
 stagingdata:
   image: jakubigla/web-data-only
   volumes:
    - /docker-data/staging/www:/www
-   - /docker-data/production/vhosts:/etc/apache2/sites-available
+   - /docker-data/staging/vhosts:/etc/apache2/sites-available
+   - /docker-data/staging/log:/var/log
 
 productionmysqldata:
  image: jakubigla/mysql-data-only
