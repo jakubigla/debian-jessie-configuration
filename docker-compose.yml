@@ -31,6 +31,8 @@ jenkins:
    - "8000:8080"
   volumes:
    - /var/jenkins_home
+  volumes_from:
+      - "jenkinsdata"
   tty: true
   restart: always
 
@@ -40,7 +42,7 @@ productionmysql:
    - /var/lib/mysql
    - /etc/mysql/conf.d
   volumes_from:
-   - "dataproduction"
+   - "productionmysqldata"
   environment:
     MYSQL_ROOT_PASSWORD: password
   tty: true
@@ -52,7 +54,7 @@ stagingmysql:
    - /var/lib/mysql
    - /etc/mysql/conf.d
   volumes_from:
-   - "datastaging"
+   - "stagingmysqldata"
   environment:
     MYSQL_ROOT_PASSWORD: password
   tty: true
@@ -62,8 +64,10 @@ production:
   image: jakubigla/apache-php
   ports:
    - "127.0.0.1:8080:8080"
+  links:
+     - productionmysql
   volumes_from:
-     - "dataproduction"
+     - "productiondata"
   environment:
       APPLICATION_ENV: production
   tty: true
@@ -73,8 +77,10 @@ staging:
   image: jakubigla/apache-php
   ports:
    - "127.0.0.1:8081:8080"
+  links:
+       - stagingmysql
   volumes_from:
-     - "datastaging"
+     - "stagingdata"
   environment:
       APPLICATION_ENV: staging
   tty: true
