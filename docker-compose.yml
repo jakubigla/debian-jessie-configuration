@@ -38,8 +38,6 @@ jenkins:
 
 productionmysql:
   image: mysql
-  ports:
-     - "3307:3306"
   volumes:
    - /var/lib/mysql
    - /etc/mysql/conf.d
@@ -52,6 +50,8 @@ productionmysql:
 
 stagingmysql:
   image: mysql
+  ports:
+     - "3307:3306"
   volumes:
    - /var/lib/mysql
    - /etc/mysql/conf.d
