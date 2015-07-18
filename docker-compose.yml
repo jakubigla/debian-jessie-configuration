@@ -1,23 +1,29 @@
-datajenkins:
+jenkinsdata:
   image: jakubigla/jenkins-data-only
   volumes:
    - /docker-data/jenkins_home:/var/jenkins_home
 
-dataproduction:
+productiondata:
   image: jakubigla/web-data-only
   volumes:
    - /docker-data/production/www:/www
    - /docker-data/production/vhosts:/etc/apache2/sites-available
-   - /docker-data/production/mysql/data:/var/lib/mysql
-   - /docker-data/production/mysql/conf:/etc/mysql/conf.d
 
-datastaging:
+stagingdata:
   image: jakubigla/web-data-only
   volumes:
    - /docker-data/staging/www:/www
-   - /docker-data/staging/vhosts:/etc/apache2/sites-available
-   - /docker-data/staging/mysql/data:/var/lib/mysql
-   - /docker-data/staging/mysql/conf:/etc/mysql/conf.d
+   - /docker-data/production/vhosts:/etc/apache2/sites-available
+
+productionmysqldata:
+ image: jakubigla/mysql-data-only
+ volumes:
+  - /docker-data/production/mysql/data:/var/lib/mysql
+
+stagingmysqldata:
+ image: jakubigla/mysql-data-only
+ volumes:
+  - /docker-data/staging/mysql/data:/var/lib/mysql
 
 jenkins:
   image: jenkins
@@ -28,7 +34,7 @@ jenkins:
   tty: true
   restart: always
 
-mysqlproduction:
+productionmysql:
   image: mysql
   volumes:
    - /var/lib/mysql
@@ -40,7 +46,7 @@ mysqlproduction:
   tty: true
   restart: always
 
-mysqlstaging:
+stagingmysql:
   image: mysql
   volumes:
    - /var/lib/mysql
