@@ -1,7 +1,7 @@
 jenkinsdata:
   image: jakubigla/jenkins-data-only
   volumes:
-   - /docker-data/jenkins_home:/var/jenkins_home
+   - /docker-data/jenkins_home:/var/lib/jenkins
    - /git:/git
 productiondata:
   image: jakubigla/web-data-only
@@ -28,11 +28,9 @@ stagingmysqldata:
   - /docker-data/staging/mysql/data:/var/lib/mysql
 
 jenkins:
-  image: jenkins
+  image: jakubigla/jenkins-php
   ports:
    - "8000:8080"
-  volumes:
-   - /var/jenkins_home
   volumes_from:
       - "jenkinsdata"
   links:
