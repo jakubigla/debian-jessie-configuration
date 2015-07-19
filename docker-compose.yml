@@ -2,7 +2,7 @@ jenkinsdata:
   image: jakubigla/jenkins-data-only
   volumes:
    - /docker-data/jenkins_home:/var/jenkins_home
-
+   - /git:/git
 productiondata:
   image: jakubigla/web-data-only
   volumes:
@@ -35,6 +35,9 @@ jenkins:
    - /var/jenkins_home
   volumes_from:
       - "jenkinsdata"
+  links:
+   - production
+   - staging
   tty: true
   restart: always
 
