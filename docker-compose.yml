@@ -21,11 +21,13 @@ productionmysqldata:
  image: jakubigla/mysql-data-only
  volumes:
   - /docker-data/production/mysql/data:/var/lib/mysql
+  - /docker-data/production/mysql/conf:/etc/mysql/conf.d
 
 stagingmysqldata:
  image: jakubigla/mysql-data-only
  volumes:
   - /docker-data/staging/mysql/data:/var/lib/mysql
+  - /docker-data/staging/mysql/conf:/etc/mysql/conf.d
 
 jenkins:
   image: jakubigla/jenkins-php
@@ -63,7 +65,6 @@ production:
   image: jakubigla/apache-php
   ports:
    - "127.0.0.1:8080:8080"
-   - "127.0.0.1:22222:22"
   links:
      - productionmysql
   volumes_from:
