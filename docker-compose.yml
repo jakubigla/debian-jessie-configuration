@@ -7,14 +7,14 @@ productiondata:
   image: jakubigla/web-data-only
   volumes:
    - /docker-data/production/www:/www
-   - /docker-data/production/vhosts:/etc/apache2/sites-available
+   - /docker-data/production/vhosts:/etc/apache2/sites-enabled
    - /docker-data/production/log:/var/log
 
 stagingdata:
   image: jakubigla/web-data-only
   volumes:
    - /docker-data/staging/www:/www
-   - /docker-data/staging/vhosts:/etc/apache2/sites-available
+   - /docker-data/staging/vhosts:/etc/apache2/sites-enabled
    - /docker-data/staging/log:/var/log
 
 productionmysqldata:
@@ -31,19 +31,16 @@ jenkins:
   image: jakubigla/jenkins-php
   ports:
    - "8000:8080"
+  volumes:
+   - /docker-data/production/www:/www/production
+   - /docker-data/staging/www:/www/staging
   volumes_from:
-      - "jenkinsdata"
-  links:
-   - production
-   - staging
+   - "jenkinsdata"
   tty: true
   restart: always
 
 productionmysql:
   image: mysql
-  volumes:
-   - /var/lib/mysql
-   - /etc/mysql/conf.d
   volumes_from:
    - "productionmysqldata"
   environment:
@@ -55,9 +52,6 @@ stagingmysql:
   image: mysql
   ports:
      - "3307:3306"
-  volumes:
-   - /var/lib/mysql
-   - /etc/mysql/conf.d
   volumes_from:
    - "stagingmysqldata"
   environment:
@@ -69,6 +63,7 @@ production:
   image: jakubigla/apache-php
   ports:
    - "127.0.0.1:8080:8080"
+   - "127.0.0.1:22222:22"
   links:
      - productionmysql
   volumes_from:
