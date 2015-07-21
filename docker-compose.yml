@@ -3,6 +3,7 @@ jenkinsdata:
   volumes:
    - /docker-data/jenkins_home:/var/lib/jenkins
    - /git:/git
+
 productiondata:
   image: jakubigla/web-data-only
   volumes:
@@ -29,6 +30,16 @@ stagingmysqldata:
   - /docker-data/staging/mysql/data:/var/lib/mysql
   - /docker-data/staging/mysql/conf:/etc/mysql/conf.d
 
+productionredisdata:
+ image: jakubigla/redis-data-only
+ volumes:
+  - /docker-data/production/redis-data:/data
+
+stagingredisdata:
+ image: jakubigla/redis-data-only
+ volumes:
+  - /docker-data/staging/redis-data:/data
+
 jenkins:
   image: jakubigla/jenkins-php
   ports:
@@ -53,11 +64,29 @@ productionmysql:
 stagingmysql:
   image: mysql
   ports:
-     - "3307:3306"
+   - "3307:3306"
   volumes_from:
    - "stagingmysqldata"
   environment:
     MYSQL_ROOT_PASSWORD: password
+  tty: true
+  restart: always
+
+productionredis:
+  image: redis
+  ports:
+    - "6379:6379"
+  volumes_from:
+     - "productionredisdata"
+  tty: true
+  restart: always
+
+stagingredis:
+  image: redis
+  ports:
+    - "6380:6379"
+  volumes_from:
+     - "stagingredisdata"
   tty: true
   restart: always
 
@@ -66,9 +95,9 @@ production:
   ports:
    - "127.0.0.1:8080:8080"
   links:
-     - productionmysql
+   - productionmysql
   volumes_from:
-     - "productiondata"
+   - "productiondata"
   environment:
       APPLICATION_ENV: production
   tty: true
