@@ -10,3 +10,5 @@ echo "deb https://repo.varnish-cache.org/debian/ jessie varnish-4.0" >> /etc/apt
 apt-get update
 apt-get install varnish
 systemctl enable varnish
+
+apt-get install backup-manager bzip2
